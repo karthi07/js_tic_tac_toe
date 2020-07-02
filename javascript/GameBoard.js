@@ -49,7 +49,14 @@ const GameBoard = (() => {
   };
   const resetBoard = () => {
     board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
+    currentPlayer = player1;
   };
+
+  document.querySelector('.restart').addEventListener('click', () => {
+    resetBoard();
+    render();
+  });
+
   const render = () => {
     const container = document.querySelector(".container");
     container.innerHTML = ` 
