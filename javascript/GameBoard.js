@@ -1,5 +1,4 @@
 const GameBoard = (() => {
-
   let board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
 
   const updateBoard = (token, position) => {
@@ -20,22 +19,39 @@ const GameBoard = (() => {
   ];
 
   const render = () => {
-    const container = document.querySelector('.container')
-    container.innerHTML = `
-    ${ board[0]} | ${ board[1]} | ${ board[2]}
-    <hr>
-    ${ board[3]} | ${ board[4]} | ${ board[5]}
-    <hr>
-    ${ board[6]} | ${ board[7]} | ${ board[8]}
-    `
+    const container = document.querySelector(".container");
+    container.innerHTML = ` 
+    <div class="btn-ctn col-md-4">
+      
+     <button class="btn board-pos btn-info" data-id=0> ${board[0]} </button>
+     <button class="btn board-pos btn-info" data-id=1> ${board[1]} </button>
+     <button class="btn btn-info board-pos" data-id=2> ${board[2]} </button>
+     <div class="w-100"></div>
+     
+     <button class="btn btn-info board-pos" data-id=3> ${board[3]} </button>
+     <button class="btn btn-info board-pos" data-id=4> ${board[4]} </button>
+     <button class="btn btn-info board-pos" data-id=5> ${board[5]} </button>
+     
+     <div class="w-100"></div>
+     <button class="btn btn-info board-pos" data-id=6> ${board[6]} </button>
+     <button class="btn btn-info board-pos" data-id=7> ${board[7]} </button>
+     <button class="btn btn-info board-pos" data-id=8> ${board[8]} </button>
+     
+    </div>
+    `;
   };
 
-
-
-  return { 
+  return {
     board,
     updateBoard,
-    render };
+    render,
+  };
 })();
 
 GameBoard.render();
+
+document.querySelector(".btn-ctn").addEventListener("click", (e) => {
+  if (e.target.classList.contains("btn")) {
+    e.target.innerHTML = e.target.dataset.id;
+  }
+});
