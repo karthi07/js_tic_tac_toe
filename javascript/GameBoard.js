@@ -9,7 +9,6 @@ const GameBoard = (() => {
   let player2 = player("player2", "O");
   let gameStatus = "play";
   let Winner;
-  let isTie = false;
 
   let currentPlayer = player1;
 
@@ -19,6 +18,7 @@ const GameBoard = (() => {
       checkTie();
       checkWinning();
       currentPlayer = currentPlayer == player1 ? player2 : player1;
+      render();
     }
   };
 
@@ -60,17 +60,18 @@ const GameBoard = (() => {
       ) {
         response = true;
         gameStatus = "won";
-        console.log("changed : " + gameStatus);
         Winner = currentPlayer;
       }
     });
 
     return response;
   };
+
   const resetBoard = () => {
     board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
     currentPlayer = player1;
     gameStatus = "play";
+    changeEventListener();
   };
 
   document.querySelector(".restart").addEventListener("click", () => {
@@ -101,17 +102,12 @@ const GameBoard = (() => {
      data-id=${i} ${board[i] != " " ? "disabled" : ""}> ${board[i]} </button>`;
       boardctn.innerHTML += btn;
     }
-    console.log(gameStatus);
   };
 
   const changeEventListener = () => {
     document.querySelector(".btn-ctn").addEventListener("click", (e) => {
       if (e.target.classList.contains("btn") && gameStatus === "play") {
-        GameBoard.updateBoard(
-          GameBoard.currentPlayer.token,
-          e.target.dataset.id
-        );
-        GameBoard.render();
+        updateBoard(currentPlayer.token, e.target.dataset.id);
       }
     });
   };
@@ -119,18 +115,12 @@ const GameBoard = (() => {
   return {
     player1,
     player2,
-    board,
     resetBoard,
-    updateBoard,
     render,
-    gameStatus,
-    currentPlayer,
-    changeEventListener,
   };
 })();
 
 // GameBoard.player1.playerName = "Karthick";
 // GameBoard.player2.playerName = "Evans";
-GameBoard.currentPlayer = GameBoard.player1;
-GameBoard.changeEventListener();
+GameBoard.resetBoard();
 GameBoard.render();
