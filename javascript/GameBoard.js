@@ -1,10 +1,21 @@
+const player = (playerName, token) => {
+  playerName, token;
+};
+
+
 const GameBoard = (() => {
-  let board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
+  let board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+
+  let player1 = player('player1', 'X');
+  let player2 = player('player2', 'O');
+
+  let currentPlayer = player1;
 
   const updateBoard = (token, position) => {
-    if (board[position] == " ") {
-      board[position] = token;
+    if (board[position] == ' ') {
+      board[position] = currentPlayer.token;
     }
+    currentPlayer = currentPlayer == player1 ? player2 : player1;
   };
 
   const winCombination = [
@@ -19,8 +30,9 @@ const GameBoard = (() => {
   ];
 
   const render = () => {
-    const container = document.querySelector(".container");
+    const container = document.querySelector('.container');
     container.innerHTML = ` 
+    <h3> Player ${currentPlayer.playerName}'s Turn : </h3>
     <div class="btn-ctn col-md-4">
       
      <button class="btn board-pos btn-info" data-id=0> ${board[0]} </button>
@@ -39,19 +51,30 @@ const GameBoard = (() => {
      
     </div>
     `;
+    document.querySelector('.btn-ctn').addEventListener('click', (e) => {
+      if (e.target.classList.contains('btn')) {
+        GameBoard.updateBoard('X', e.target.dataset.id);
+        // e.target.innerHTML = 'X'
+        GameBoard.render();
+      }
+    });
   };
 
   return {
+    player1,
+    player2,
     board,
     updateBoard,
     render,
   };
 })();
 
-GameBoard.render();
 
-document.querySelector(".btn-ctn").addEventListener("click", (e) => {
-  if (e.target.classList.contains("btn")) {
-    e.target.innerHTML = e.target.dataset.id;
-  }
-});
+
+GameBoard.player1 = player('Karthi', 'X');
+GameBoard.player2 = player('Evans', 'O');
+GameBoard.currentPlayer = GameBoard.player1
+//current player
+//switche player
+//check winning
+GameBoard.render();
