@@ -7,7 +7,7 @@ const GameBoard = (() => {
 
   let player1 = player("player1", "X");
   let player2 = player("player2", "O");
-  let gameStatus;
+  let gameStatus = "play";
   let Winner;
   let isTie = false;
 
@@ -16,8 +16,9 @@ const GameBoard = (() => {
   const updateBoard = (token, position) => {
     if (board[position] == " ") {
       board[position] = currentPlayer.token;
-      currentPlayer = currentPlayer == player1 ? player2 : player1;
       checkTie();
+      checkWinning();
+      currentPlayer = currentPlayer == player1 ? player2 : player1;
     }
   };
 
@@ -42,7 +43,6 @@ const GameBoard = (() => {
     if (tie == true) {
       gameStatus = "tie";
     }
-    console.log(tie);
     return tie;
   };
 
@@ -69,11 +69,11 @@ const GameBoard = (() => {
   const resetBoard = () => {
     board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
     currentPlayer = player1;
+    gameStatus = "play";
   };
 
   document.querySelector(".restart").addEventListener("click", () => {
     resetBoard();
-    gameStatus = "";
     render();
   });
 
@@ -112,11 +112,10 @@ const GameBoard = (() => {
      
     </div>
     `;
-    if (gameStatus != "won") {
+    if (gameStatus == "play") {
       document.querySelector(".btn-ctn").addEventListener("click", (e) => {
         if (e.target.classList.contains("btn")) {
           GameBoard.updateBoard(currentPlayer.token, e.target.dataset.id);
-          // e.target.innerHTML = 'X'
           GameBoard.render();
         }
       });
