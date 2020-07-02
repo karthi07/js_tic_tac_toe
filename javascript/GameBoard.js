@@ -60,6 +60,7 @@ const GameBoard = (() => {
       ) {
         response = true;
         gameStatus = "won";
+        console.log("changed : " + gameStatus);
         Winner = currentPlayer;
       }
     });
@@ -78,48 +79,41 @@ const GameBoard = (() => {
   });
 
   const render = () => {
-    const container = document.querySelector(".container");
+    const boardctn = document.querySelector("#board-ctn");
+    const status = document.querySelector("#status");
     let result = " ";
+
     if (gameStatus === "won") {
       result = Winner.playerName + " Won the Game ! ";
+      changeEventListener();
     } else if (gameStatus === "tie") {
-      result = "Game Tied ! Restart the game";
+      result = "Game Tied ! <small> Restart the game</small>";
+      changeEventListener();
     } else {
       result =
-        " player " +
-        currentPlayer.playerName +
-        "'s Turn (" +
-        currentPlayer.token +
-        ") : ";
+        currentPlayer.playerName + "'s Turn (" + currentPlayer.token + ") : ";
     }
-    container.innerHTML = ` 
-     <h3> ${result} </h3>
-    <div class="btn-ctn col-md-4">
-      
-     <button class="btn board-pos btn-info" data-id=0> ${board[0]} </button>
-     <button class="btn board-pos btn-info" data-id=1> ${board[1]} </button>
-     <button class="btn btn-info board-pos" data-id=2> ${board[2]} </button>
-     <div class="w-100"></div>
-     
-     <button class="btn btn-info board-pos" data-id=3> ${board[3]} </button>
-     <button class="btn btn-info board-pos" data-id=4> ${board[4]} </button>
-     <button class="btn btn-info board-pos" data-id=5> ${board[5]} </button>
-     
-     <div class="w-100"></div>
-     <button class="btn btn-info board-pos" data-id=6> ${board[6]} </button>
-     <button class="btn btn-info board-pos" data-id=7> ${board[7]} </button>
-     <button class="btn btn-info board-pos" data-id=8> ${board[8]} </button>
-     
-    </div>
-    `;
-    if (gameStatus == "play") {
-      document.querySelector(".btn-ctn").addEventListener("click", (e) => {
-        if (e.target.classList.contains("btn")) {
-          GameBoard.updateBoard(currentPlayer.token, e.target.dataset.id);
-          GameBoard.render();
-        }
-      });
+
+    status.innerHTML = result;
+    boardctn.innerHTML = "";
+    for (i in board) {
+      btn = `<button class="btn board-pos btn-info" 
+     data-id=${i} ${board[i] != " " ? "disabled" : ""}> ${board[i]} </button>`;
+      boardctn.innerHTML += btn;
     }
+    console.log(gameStatus);
+  };
+
+  const changeEventListener = () => {
+    document.querySelector(".btn-ctn").addEventListener("click", (e) => {
+      if (e.target.classList.contains("btn") && gameStatus === "play") {
+        GameBoard.updateBoard(
+          GameBoard.currentPlayer.token,
+          e.target.dataset.id
+        );
+        GameBoard.render();
+      }
+    });
   };
 
   return {
@@ -129,14 +123,14 @@ const GameBoard = (() => {
     resetBoard,
     updateBoard,
     render,
+    gameStatus,
+    currentPlayer,
+    changeEventListener,
   };
 })();
 
-GameBoard.player1.playerName = "Karthick";
-GameBoard.player2.playerName = "Evans";
+// GameBoard.player1.playerName = "Karthick";
+// GameBoard.player2.playerName = "Evans";
 GameBoard.currentPlayer = GameBoard.player1;
-//current player
-//switche player
-//check winning
-
+GameBoard.changeEventListener();
 GameBoard.render();
