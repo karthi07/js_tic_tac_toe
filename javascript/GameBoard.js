@@ -1,21 +1,24 @@
-const player = (playerName, token) => {
-  playerName, token;
-};
-
-
 const GameBoard = (() => {
-  let board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+  let board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
 
-  let player1 = player('player1', 'X');
-  let player2 = player('player2', 'O');
+  const player = (playerName, token) => {
+    return { playerName, token };
+  };
+
+  let player1 = player("player1", "X");
+  let player2 = player("player2", "O");
+  let gameStatus;
 
   let currentPlayer = player1;
 
   const updateBoard = (token, position) => {
-    if (board[position] == ' ') {
+    if (board[position] == " ") {
       board[position] = currentPlayer.token;
     }
-    currentPlayer = currentPlayer == player1 ? player2 : player1;
+    if (checkWinning()) {
+      gameStatus = "won";
+      resetBoard();
+    } else currentPlayer = currentPlayer == player1 ? player2 : player1;
   };
 
   const winCombination = [
@@ -28,11 +31,37 @@ const GameBoard = (() => {
     [0, 4, 8],
     [2, 4, 6],
   ];
-
+  const checkWinning = () => {
+    let response = false;
+    winCombination.forEach((combo) => {
+      const first = combo[0];
+      const second = combo[1];
+      const third = combo[2];
+      if (
+        board[first] === board[second] &&
+        board[first] === board[third] &&
+        board[first] !== " "
+      ) {
+        response = true;
+      }
+    });
+    return response;
+  };
+  const resetBoard = () => {
+    board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
+  };
   const render = () => {
-    const container = document.querySelector('.container');
+    const container = document.querySelector(".container");
     container.innerHTML = ` 
-    <h3> Player ${currentPlayer.playerName}'s Turn : </h3>
+     ${
+       gameStatus == "won"
+         ? "<h3> " + currentPlayer.playerName + " Won the Game ! </h3> "
+         : "<h3> player " +
+           currentPlayer.playerName +
+           "'s Turn (" +
+           currentPlayer.token +
+           ") : </h3> "
+     }
     <div class="btn-ctn col-md-4">
       
      <button class="btn board-pos btn-info" data-id=0> ${board[0]} </button>
@@ -51,30 +80,32 @@ const GameBoard = (() => {
      
     </div>
     `;
-    document.querySelector('.btn-ctn').addEventListener('click', (e) => {
-      if (e.target.classList.contains('btn')) {
-        GameBoard.updateBoard('X', e.target.dataset.id);
-        // e.target.innerHTML = 'X'
-        GameBoard.render();
-      }
-    });
+    if (gameStatus != "won") {
+      document.querySelector(".btn-ctn").addEventListener("click", (e) => {
+        if (e.target.classList.contains("btn")) {
+          GameBoard.updateBoard("X", e.target.dataset.id);
+          // e.target.innerHTML = 'X'
+          GameBoard.render();
+        }
+      });
+    }
   };
 
   return {
     player1,
     player2,
     board,
+    resetBoard,
     updateBoard,
     render,
   };
 })();
 
-
-
-GameBoard.player1 = player('Karthi', 'X');
-GameBoard.player2 = player('Evans', 'O');
-GameBoard.currentPlayer = GameBoard.player1
+GameBoard.player1.playerName = "Karthick";
+GameBoard.player2.playerName = "Evans";
+GameBoard.currentPlayer = GameBoard.player1;
 //current player
 //switche player
 //check winning
+
 GameBoard.render();
