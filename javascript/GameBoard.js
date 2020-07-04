@@ -7,7 +7,7 @@ const GameBoard = (() => {
 
   const player1 = player('player1', 'X');
   const player2 = player('player2', 'O');
-  let gameStatus = 'play';
+  let gameStatus = '';
   let winner;
 
   let currentPlayer = player1;
@@ -30,7 +30,9 @@ const GameBoard = (() => {
     boardctn.innerHTML = '';
     for (const i in board) {
       const btn = `<button class="btn board-pos btn-info" 
-     data-id=${i} ${board[i] !== ' ' ? 'disabled' : ''}> ${board[i]} </button>`;
+     data-id=${i} ${
+    board[i] !== ' ' || gameStatus !== 'play' ? 'disabled' : ''
+  }> ${board[i]} </button>`;
       boardctn.innerHTML += btn;
     }
   };
@@ -72,9 +74,24 @@ const GameBoard = (() => {
 
   return {
     render,
+    player1,
+    player2,
     resetBoard,
   };
 })();
+document.querySelector('#game-ctn').style.display = 'none';
 
-GameBoard.resetBoard();
-GameBoard.render();
+// form Listener
+const form = document.querySelector('#user-form');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  GameBoard.player1.playerName = document.querySelector('#player1').value;
+  GameBoard.player2.playerName = document.querySelector('#player2').value;
+  document.querySelector('#player1').value = '';
+  document.querySelector('#player2').value = '';
+  e.target.style.display = 'none';
+  GameBoard.resetBoard();
+  GameBoard.render();
+
+  document.querySelector('#game-ctn').style.display = 'block';
+});

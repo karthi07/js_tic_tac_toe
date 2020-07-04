@@ -7,3 +7,8 @@
 .btn-ctn {
   margin: 1rem auto;
 }
+
+form {
+  max-width: 30%;
+  margin: 2rem auto;
+}
