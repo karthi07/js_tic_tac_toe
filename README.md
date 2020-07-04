@@ -38,10 +38,10 @@ Javascript implementaion of TicTacToe
 
 👤 **Evanson Igiri**
 
-- Github: [@evansinho](https://github.com/evansinho)
-- Twitter: [@iamsinho1304](https://twitter.com/iamsinho1304)
-- Linkedin: [evanson-igiri](LinkedIn.com/in/evanson-igiri)
-- Email: [evanson](mailto:igiri.evanson@gmail.com)
+- [Portfolio](https://evansinho.github.io/Evanson-igiri/)
+- [Twitter](https://twitter.com/iamsinho1304)
+- [Linkedin](LinkedIn.com/in/evanson-igiri)
+- [Email](mailto:igiri.evanson@gmail.com)
 
 👤 **Karthick Venkatesan**
 
