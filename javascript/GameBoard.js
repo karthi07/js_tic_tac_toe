@@ -8,7 +8,7 @@ const GameBoard = (() => {
   const player1 = player('player1', 'X');
   const player2 = player('player2', 'O');
   let gameStatus = 'play';
-  let Winner;
+  let winner;
 
   let currentPlayer = player1;
 
@@ -17,7 +17,7 @@ const GameBoard = (() => {
     const status = document.querySelector('#status');
     let result = ' ';
     if (gameStatus === 'won') {
-      result = `${Winner.playerName} Won the Game ! `;
+      result = `${winner.playerName} Won the Game ! `;
       changeEventListener();
     } else if (gameStatus === 'tie') {
       result = 'Game Tied ! <small> Restart the game</small>';
@@ -41,7 +41,7 @@ const GameBoard = (() => {
 
       if (checkWinning(board)) {
         gameStatus = 'won';
-        Winner = currentPlayer;
+        winner = currentPlayer;
       } else if (checkTie(board)) {
         gameStatus = 'tie';
       }

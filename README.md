@@ -8,6 +8,12 @@ Javascript implementaion of TicTacToe
 - JavaScript
 - Bootstrap
 
+## Live 
+
+[live demo](https://raw.githack.com/karthi07/js_tic_tac_toe/tick-tac-toe/index.html)
+
+## snaphot
+
 ![Create Book](snapshot.PNG)
 
 ### Prerequisites
@@ -18,6 +24,7 @@ Javascript implementaion of TicTacToe
 
 - Fork the repo to your remote repository.
 - Clone or download the repository to your local machine.
+- open the `index.html` on your browser and play the game
 
 ### Install
 
