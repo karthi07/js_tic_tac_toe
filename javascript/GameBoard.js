@@ -1,97 +1,100 @@
+/* eslint-disable import/no-mutable-exports */
+/* eslint-disable import/prefer-default-export */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable guard-for-in */
 /* eslint-disable no-use-before-define */
 /* global player, checkWinning, checkTie */
-const GameBoard = (() => {
-  let board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+import { checkTie, checkWinning, player } from './logic';
 
-  const player1 = player('player1', 'X');
-  const player2 = player('player2', 'O');
-  let gameStatus = '';
-  let winner;
+export let board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
 
-  let currentPlayer = player1;
+export let currentPlayer;
 
-  const render = () => {
-    const boardctn = document.querySelector('#board-ctn');
-    const status = document.querySelector('#status');
-    let result = ' ';
-    if (gameStatus === 'won') {
-      result = `${winner.playerName} Won the Game ! `;
-      changeEventListener();
-    } else if (gameStatus === 'tie') {
-      result = 'Game Tied ! <small> Restart the game</small>';
-      changeEventListener();
-    } else {
-      result = `${currentPlayer.playerName}'s Turn (${currentPlayer.token}) : `;
+export const player1 = player('player1', 'X');
+export const player2 = player('player2', 'O');
+let gameStatus = '';
+let winner;
+
+currentPlayer = player1;
+
+const render = () => {
+  const boardctn = document.querySelector('#board-ctn');
+  const status = document.querySelector('#status');
+  let result = ' ';
+  if (gameStatus === 'won') {
+    result = `${winner.playerName} Won the Game ! `;
+    changeEventListener();
+  } else if (gameStatus === 'tie') {
+    result = 'Game Tied ! <small> Restart the game</small>';
+    changeEventListener();
+  } else {
+    result = `${currentPlayer.playerName}'s Turn (${currentPlayer.token}) : `;
+  }
+
+  status.innerHTML = result;
+  boardctn.innerHTML = '';
+  for (const i in board) {
+    const btn = `<button class="btn board-pos btn-info" 
+     data-id=${i} ${board[i] !== ' ' || gameStatus !== 'play' ? 'disabled' : ''}> ${board[i]} </button>`;
+    boardctn.innerHTML += btn;
+  }
+};
+
+export const updateBoard = (position) => {
+  if (board[position] === ' ') {
+    board[position] = currentPlayer.token;
+
+    if (checkWinning(board)) {
+      gameStatus = 'won';
+      winner = currentPlayer;
+    } else if (checkTie(board)) {
+      gameStatus = 'tie';
     }
+    currentPlayer = currentPlayer === player1 ? player2 : player1;
+  }
+};
 
-    status.innerHTML = result;
-    boardctn.innerHTML = '';
-    for (const i in board) {
-      const btn = `<button class="btn board-pos btn-info" 
-     data-id=${i} ${
-    board[i] !== ' ' || gameStatus !== 'play' ? 'disabled' : ''
-  }> ${board[i]} </button>`;
-      boardctn.innerHTML += btn;
-    }
-  };
+export const resetBoard = () => {
+  board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
+  currentPlayer = player1;
+  gameStatus = 'play';
+};
 
-  const updateBoard = (position) => {
-    if (board[position] === ' ') {
-      board[position] = currentPlayer.token;
-
-      if (checkWinning(board)) {
-        gameStatus = 'won';
-        winner = currentPlayer;
-      } else if (checkTie(board)) {
-        gameStatus = 'tie';
-      }
-      currentPlayer = currentPlayer === player1 ? player2 : player1;
+const changeEventListener = () => {
+  document.querySelector('.btn-ctn').addEventListener('click', (e) => {
+    if (e.target.classList.contains('btn') && gameStatus === 'play') {
+      updateBoard(e.target.dataset.id);
       render();
     }
-  };
-
-  const resetBoard = () => {
-    board = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '];
-    currentPlayer = player1;
-    gameStatus = 'play';
-    changeEventListener();
-  };
-
-  document.querySelector('.restart').addEventListener('click', () => {
-    resetBoard();
-    render();
   });
+};
 
-  const changeEventListener = () => {
-    document.querySelector('.btn-ctn').addEventListener('click', (e) => {
-      if (e.target.classList.contains('btn') && gameStatus === 'play') {
-        updateBoard(e.target.dataset.id);
-      }
-    });
-  };
+const gamectnDisplay = () => { document.querySelector('#game-ctn').style.display = 'none'; };
 
-  return {
-    render,
-    player1,
-    player2,
-    resetBoard,
-  };
-})();
-document.querySelector('#game-ctn').style.display = 'none';
+const restartListener = () => document.querySelector('.restart').addEventListener('click', () => {
+  resetBoard();
+  changeEventListener();
+  render();
+});
 
-// form Listener
-const form = document.querySelector('#user-form');
-form.addEventListener('submit', (e) => {
+// // form Listener
+export const form = document.querySelector('#user-form');
+const formListerner = () => form.addEventListener('submit', (e) => {
   e.preventDefault();
-  GameBoard.player1.playerName = document.querySelector('#player1').value;
-  GameBoard.player2.playerName = document.querySelector('#player2').value;
+  player1.playerName = document.querySelector('#player1').value;
+  player2.playerName = document.querySelector('#player2').value;
   document.querySelector('#player1').value = '';
   document.querySelector('#player2').value = '';
   e.target.style.display = 'none';
-  GameBoard.resetBoard();
-  GameBoard.render();
+  resetBoard();
+  changeEventListener();
+  render();
 
   document.querySelector('#game-ctn').style.display = 'block';
 });
+
+document.onload = () => {
+  gamectnDisplay();
+  restartListener();
+  formListerner();
+};

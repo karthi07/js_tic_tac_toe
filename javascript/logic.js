@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-unused-vars */
-export const winCombination = [
+const winCombination = [
   [0, 1, 2],
   [3, 4, 5],
   [6, 7, 8],
@@ -39,4 +39,4 @@ export function checkTie(board) {
   return tie;
 }
 
-const player = (playerName, token) => ({ playerName, token });
+export const player = (playerName, token) => ({ playerName, token });
