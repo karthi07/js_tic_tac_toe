@@ -12,6 +12,11 @@ test('check tie for a tie board', () => {
   expect(checkTie(board)).toBe(true);
 });
 
+test('check not wining for normal case', () => {
+  board = ['X', 'O', 'X', 'O', ' ', ' ', ' ', ' ', 'X'];
+  expect(checkWinning(board)).toBe(false);
+});
+
 test('check horizontal win case', () => {
   board = ['X', 'X', 'X', 'O', 'X', 'O', 'O', 'O', 'X'];
   expect(checkWinning(board)).toBe(true);

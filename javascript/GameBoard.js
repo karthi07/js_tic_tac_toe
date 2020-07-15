@@ -93,8 +93,8 @@ const formListerner = () => form.addEventListener('submit', (e) => {
   document.querySelector('#game-ctn').style.display = 'block';
 });
 
-document.onload = () => {
-  gamectnDisplay();
-  restartListener();
-  formListerner();
-};
+// document.onload = () => {
+//   gamectnDisplay();
+//   restartListener();
+//   formListerner();
+// };
