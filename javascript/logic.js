@@ -11,7 +11,7 @@ const winCombination = [
   [2, 4, 6],
 ];
 
-function checkWinning(board) {
+export function checkWinning(board) {
   let response = false;
   winCombination.forEach((combo) => {
     const first = combo[0];
@@ -29,7 +29,7 @@ function checkWinning(board) {
   return response;
 }
 
-function checkTie(board) {
+export function checkTie(board) {
   let tie = true;
   for (const val of board) {
     if (val === ' ') {
