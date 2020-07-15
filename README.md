@@ -30,6 +30,10 @@ Javascript implementaion of TicTacToe
 
 - No istallation needed.
 
+### Test
+
+- Run test cases using `npm test` command
+
 ### Usage
 
 - Visit the live demo link on your web browser.
